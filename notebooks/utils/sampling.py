@@ -48,14 +48,14 @@ def select_analysis_columns(all_columns: list[str]) -> list[str]:
 
     nutrition_cols = [c for c in cols_after_meta_drop if c.endswith('_100g')]
 
-    keywords = ["categor", "brand", "label", "origin", "countr", "ingredient"]
+    keywords = ["categor", "brand", "label", "origin", "countr", "ingredient", ]
     seg_tags = [
         col for col in cols_after_meta_drop
         if any(kw in col.lower() for kw in keywords)
         and (col.endswith('_tags') or col == 'ingredients_analysis_tags')
     ]
 
-    special_cols = ['stores', 'nova_group', 'main_category_en']
+    special_cols = ['stores', 'nova_group', 'main_category_en', "nutrition_grade_fr", "created_datetime"]
 
     # Deduplicate and filter to columns that actually exist
     selected = list(set(id_cols + nutrition_cols + seg_tags + special_cols))
@@ -186,7 +186,6 @@ def load_or_sample(
         #  Just a simple, memory-safe streaming loop.
         # ────────────────────────────────────────────────────
         sampled_chunks = []
-        collected = 0
         t0 = time.time()
 
         reader = pd.read_csv(
@@ -202,22 +201,21 @@ def load_or_sample(
         for i, chunk in enumerate(reader):
             sampled = chunk.sample(frac=sampling_fraction, random_state=seed + i)
             sampled_chunks.append(sampled)
-            collected += len(sampled)
-            del chunk  # Free immediately
+            del chunk  # Free immediately — don't accumulate the full chunk
 
             # Progress update every 20 chunks
             if (i + 1) % 20 == 0:
                 elapsed = time.time() - t0
                 rows_read = (i + 1) * chunk_size
                 pct = min(rows_read / total_rows * 100, 100)
+                collected_so_far = sum(len(c) for c in sampled_chunks)
                 print(f"   ... {pct:.0f}% read | "
-                      f"collected {collected:,} rows | "
+                      f"collected {collected_so_far:,} rows | "
                       f"{elapsed:.0f}s elapsed")
 
-            # Early exit: if we've already collected enough, stop reading
-            if collected >= sample_size:
-                print(f"   ✅ Reached target — stopping early at chunk {i+1}")
-                break
+        # No early exit — we always read the ENTIRE file.
+        # The 5% oversample ensures we end up with >= sample_size rows,
+        # then trim to exactly sample_size at the end.
 
         elapsed = time.time() - t0
         print(f"\n⏱️  Streaming done in {elapsed:.1f}s")
