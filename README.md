@@ -13,7 +13,7 @@ Using the OpenFoodFacts database (4.4M products, sampled to 2.5M for efficiency)
 | 📓 **Notebook** | [notebooks/analysis.ipynb](notebooks/analysis.ipynb) |
 | 📄 **HTML Export** | [reports/analysis.html](reports/analysis.html) |
 | 📊 **Dashboard** | [Streamlit Dashboard](https://ishola-amalitech.streamlit.app/) |
-| 📽️ **Presentation** | _Coming soon_ |
+| 📽️ **Presentation** | [reports/presentation.pptx](reports/presentation.pptx) |
 
 
 ---
