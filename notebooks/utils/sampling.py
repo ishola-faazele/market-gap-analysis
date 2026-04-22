@@ -55,7 +55,16 @@ def select_analysis_columns(all_columns: list[str]) -> list[str]:
         and (col.endswith('_tags') or col == 'ingredients_analysis_tags')
     ]
 
-    special_cols = ['stores', 'nova_group', 'main_category_en', "nutrition_grade_fr", "created_datetime"]
+    special_cols = [
+        'stores',
+        'nova_group',
+        'main_category_en',
+        'nutriscore_score',        # numeric score (-15 best → +40 worst)
+        'nutriscore_grade',        # letter grade: a (best) → e (worst)
+        'nutrient_levels_tags',    # e.g. "en:fat-in-high-quantity,en:sugars-in-low-quantity"
+        'no_nutrition_data',       # flag: '1' if product has no nutrition info at all
+        'created_datetime',
+    ]
 
     # Deduplicate and filter to columns that actually exist
     selected = list(set(id_cols + nutrition_cols + seg_tags + special_cols))
