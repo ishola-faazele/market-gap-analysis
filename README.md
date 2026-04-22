@@ -12,10 +12,9 @@ Using the OpenFoodFacts database (4.4M products, sampled to 2.5M for efficiency)
 |---|---|
 | 📓 **Notebook** | [notebooks/analysis.ipynb](notebooks/analysis.ipynb) |
 | 📄 **HTML Export** | [reports/analysis.html](reports/analysis.html) |
-| 📊 **Dashboard** | [Streamlit Dashboard](https://INSERT-YOUR-STREAMLIT-URL.streamlit.app) |
+| 📊 **Dashboard** | [Streamlit Dashboard](https://ishola-amalitech.streamlit.app/) |
 | 📽️ **Presentation** | _Coming soon_ |
 
-> **⚠️ Note:** Replace the Dashboard URL above with your actual Streamlit Cloud link after deployment.
 
 ---
 
@@ -97,7 +96,7 @@ mga/
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/YOUR-USERNAME/market-gap-analysis.git
+git clone https://github.com/ishola-faazele/market-gap-analysis.git
 cd market-gap-analysis
 
 # 2. Install dependencies
