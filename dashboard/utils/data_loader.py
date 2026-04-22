@@ -14,7 +14,13 @@ import streamlit as st
 
 
 # ── Path to the cleaned dataset (relative to project root) ───────────────────
-CLEAN_CSV = "data/openfoodfacts_clean.csv"
+# Try compressed first (for Streamlit Cloud), fall back to uncompressed (local)
+import os
+CLEAN_CSV = (
+    "data/openfoodfacts_clean.csv.gz"
+    if os.path.exists("data/openfoodfacts_clean.csv.gz")
+    else "data/openfoodfacts_clean.csv"
+)
 
 # ── NHS / WHO Health Thresholds ───────────────────────────────────────────────
 NHS_PROTEIN_THRESHOLD = 5.0   # g/100g — above this = "high protein"
